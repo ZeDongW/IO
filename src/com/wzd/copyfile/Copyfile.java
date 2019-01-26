@@ -59,9 +59,9 @@ public class Copyfile {
             fileOutputStream.write(buf, 0, length);
         }
 
-        //关闭输入输出流
-        fileInputStream.close();
+        //关闭输入输出流,先开后关
         fileOutputStream.close();
+        fileInputStream.close();
     }
 
 }
