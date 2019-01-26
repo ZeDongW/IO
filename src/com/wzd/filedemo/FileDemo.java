@@ -1,7 +1,6 @@
 package com.wzd.filedemo;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * @author ：ZeDongW
@@ -13,13 +12,13 @@ import java.io.IOException;
  */
 public class FileDemo {
     public static void main(String[] args) {
-        File file = new File("");
-        try {
+        File file = new File("\\src\\com\\wzd\\filestream");
+        /*try {
             file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(file.exists());
+        System.out.println(file.exists());*/
         System.out.println(file.getAbsolutePath());
         System.out.println(File.separator);
     }
