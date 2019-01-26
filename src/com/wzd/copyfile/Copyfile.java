@@ -73,14 +73,15 @@ public class Copyfile {
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            }
-            try {
-                //关闭输入输出流,先开后关
-                if (fileInputStream != null){
-                    fileInputStream.close();
+            } finally {
+                try {
+                    //关闭输入输出流,先开后关
+                    if (fileInputStream != null){
+                        fileInputStream.close();
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
     }
