@@ -71,6 +71,11 @@ public class Copyfile {
                 if (fileOutputStream != null){
                     fileOutputStream.close();
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                //关闭输入输出流,先开后关
                 if (fileInputStream != null){
                     fileInputStream.close();
                 }
