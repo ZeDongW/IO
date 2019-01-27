@@ -15,7 +15,58 @@ public class Copyfile {
         String sourcePath = "E:\\Delacey - Dream It Possible.mp3";
         String destPath = "src\\";
         sourcePath = "E:\\IMG_20190106_141012.jpg";
-        myCopyFile(sourcePath, destPath);
+//        myCopyFile(sourcePath, destPath);
+        myCopyFileByBuff(sourcePath, destPath);
+    }
+
+    /**
+     * @Author     : ZeDongW
+     * @Description: 通过缓冲字节流复制文件
+     * @Date       : 2019/01/27/0027 12:02
+     * @Param      : [sourcePath, destPath]
+     * @return     : void
+     */
+    private static void myCopyFileByBuff(String sourcePath, String destPath) {
+        //根据源文件路径，获取源文件对象
+        File sourceFile = new File(sourcePath);
+        if (!sourceFile.exists()){
+            throw new RuntimeException(new FileNotFoundException("该文件不存在"));
+        }
+        File destFile = getDestFile(destPath, sourceFile);
+
+        //缓冲输入字节流
+        BufferedInputStream bufferedInputStream = null;
+
+        //缓冲输出字节流
+        BufferedOutputStream bufferedOutputStream = null;
+
+        try {
+            bufferedInputStream = new BufferedInputStream(new FileInputStream(sourceFile));
+            bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(destFile));
+            int length = 0;
+            while ((length = bufferedInputStream.read()) != -1) {
+                bufferedOutputStream.write(length);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (bufferedOutputStream != null){
+                try {
+                    bufferedOutputStream.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    if (bufferedInputStream != null){
+                        try {
+                            bufferedInputStream.close();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     /**
@@ -31,15 +82,7 @@ public class Copyfile {
         if (!sourceFile.exists()){
             throw new RuntimeException(new FileNotFoundException("该文件不存在"));
         }
-
-        //获取源文件文件名
-        String sourceFileName = sourceFile.getName();
-
-        //获取源文件文件扩展名
-        String expandedName = sourceFileName.substring(sourceFileName.lastIndexOf("."));
-
-        //根据目标文件路径和源文件扩展名创建目标文件
-        File destFile = new File(destPath + "newFile" + expandedName);
+        File destFile = getDestFile(destPath, sourceFile);
 
         FileInputStream fileInputStream = null;
 
@@ -84,6 +127,24 @@ public class Copyfile {
                 }
             }
         }
+    }
+
+    /**
+     * @Author     : ZeDongW
+     * @Description: 创建目标文件路径
+     * @Date       : 2019/01/27/0027 12:12
+     * @Param      : [destPath, sourceFile]
+     * @return     : java.io.File
+     */
+    public static File getDestFile(String destPath, File sourceFile) {
+        //获取源文件文件名
+        String sourceFileName = sourceFile.getName();
+
+        //获取源文件文件扩展名
+        String expandedName = sourceFileName.substring(sourceFileName.lastIndexOf("."));
+
+        //根据目标文件路径和源文件扩展名创建目标文件
+        return new File(destPath + "newFile" + expandedName);
     }
 
 }
