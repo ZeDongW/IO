@@ -94,6 +94,7 @@ IO流分类：
                                     注意：
                                         1.凡是缓冲流都不具备读写文件的能力
                                         2.当没有执行close()或数组没有写满，需要使用flush()刷新才能写入。
+                    ----------SequenceInputStream() 序列输入字节流
                 输入字节流：
                       -----OutStream    所有输出字节流的基类 抽象类
                       ----------FileOutputStream 想文件输出数据的输出字节流
@@ -121,3 +122,40 @@ IO流分类：
                     ------FileWriter() 所有输出字符流的基类
                     ----------FileWriter() 输出字符流
                     ----------BufferedWriter 缓冲输出字节流
+
+    对象的输入输出流：对象的输入输出流主要作用是用于写对象的信息与读对象的信息。对象一旦写到文件上对象的信息可以做到持久化了
+        对象的输出流：
+            ObjectOutputStream
+        对象的输入流
+            ObjectInputStream
+        对象的输入输出流要注意的细节：
+            1.如果对象要被写到文件上，那么对象所属的类必须要实现Serializable接口，Serizlizable借口没有任何方法，只是一个标识借口而已。
+            2.对象的反序列化创建对象的时候并不会调用到构造方法的。
+            3.serialVersionUid是用于记录class文件的版本信息的，serivalVersionUid这个数字是通过一个类的类名、成员、包名、工程名算出的一个数字。
+            4.使用ObjectInputStream反序列化的时候，ObjectInputStream会先读取文件中的serivalVersionUid，然后与本地的class文件的serivalVersionUid进行对比，
+                如果两个id不一致，反序列化失败。
+            5.如果序列化与反序列化的时候可能会修改类的成员，那么最好一开始就给这个类指定一个serivalVersionUid，如果一个类已经指定了serivalVersionUid，
+                然后在序列化和反序列化的时候jvm再自己算这个class的serivalVersionUid了
+            6.如果一个对象某个数据不想被序列化到硬盘上，可以使用关键字transient修饰。
+            7.如果一个类维护了另外一个类的引用，那么另外一个类也需要实现Serializable接口。
+        transient  透明，不会被序列化
+
+    Properties(配置文件类)：主要用于生成配置文件，与读取配置文件信息。
+        Properties  要注意的细节：
+            1.如果配置文件的信息一旦使用了中文，那么用store方法生成配置文件的时候只能使用字符流解决，如果使用字节流生成配置文件的话，
+                默认使用iso8859-1码表进行编码储存，这时候会出现乱码
+
+    PrintStream 打印流  可以打印任意类型的数据，而且打印数据之前都会先把数据转换成子字符串再打印
+
+    编码与解码：
+        编码：把看得见的字符变成看不懂的码值，这个过程称为编码
+        解码：按码值查找对应的字符，这个过程称为解码
+
+    转换流：
+        输入字节流的转换流
+            InputStreamReader()
+        输出字节流的转换流
+            OutputStreamWriter() 可以把输出字节流转换成输出字符流
+        转换流的作用：
+            1.如果目前所获取到的需要转换字符流使用，这时候可以使用转换流。 字节流->字符流
+            2.使用转换流可以指定编码表读写文件
